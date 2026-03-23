@@ -4,31 +4,32 @@ function TheoryPage() {
       <section className="novice card reveal-up">
         <h2>Beginner Quick Start</h2>
         <p>
-          If you are a first-time learner, think of Pumping Lemma as a stress test for
-          regular languages. We pick one long string, split it into x, y, z, and then
-          test what happens when the middle part y is repeated.
-        </p>
+     Think of the Pumping Lemma as a way to check whether a language is regular or not.
+          It works by taking a sufficiently long string and testing if a part of it can be
+          repeated without breaking the rules of the language.    </p>
         <div className="noviceGrid">
           <article>
             <h3>What is p?</h3>
             <p>
-              p is the pumping length. It is a boundary that says x and y must come from
-              the first p symbols.
+         p is called the pumping length. It defines a limit such that the repeating
+              part must appear within the first p characters of the string.
             </p>
           </article>
           <article>
             <h3>What are x, y, z?</h3>
             <p>
-              x is prefix, y is pump region, and z is suffix. y cannot be empty because
+                 Any string s is divided into three parts: x (prefix), y (middle part),
+              and z (suffix). The middle part y is the section that will be repeated.
               we must pump something.
             </p>
           </article>
           <article>
             <h3>What does pumping mean?</h3>
             <p>
-              Pumping means replacing y by y^i for i = 0, 1, 2, ... If one pumped string
-              leaves the language, we get contradiction.
-            </p>
+           Pumping means repeating the middle part y multiple times (or even removing it).
+              If repeating y causes the string to break the rules of the language, then the
+              language is not regular.
+                </p>
           </article>
         </div>
       </section>
@@ -36,18 +37,20 @@ function TheoryPage() {
       <section className="intro card reveal-up">
         <h2>What is Pumping Lemma?</h2>
         <p>
-          Pumping lemma is a test used to reason about regular languages. If a language is
-          regular, then every long enough string can be split as s = xyz with special rules.
-        </p>
+          The Pumping Lemma is a property that all regular languages must satisfy.
+          It states that any sufficiently long string in a regular language can be
+          divided into three parts: s = xyz, following certain conditions.
+       </p>
         <ul>
           <li>|xy| must be at most p.</li>
           <li>|y| must be at least 1.</li>
           <li>For every i &gt;= 0, xy^i z must remain in the language.</li>
         </ul>
         <p>
-          Proof idea for non-regular languages: pick s in L, force y into a sensitive
-          region, pump with some i, and show resulting string is not in L.
-        </p>
+      To prove that a language is not regular, we assume it is regular, apply
+          the lemma, and show that for some value of i, the string no longer belongs
+          to the language. This contradiction proves the language is not regular.
+         </p>
       </section>
     </>
   )
