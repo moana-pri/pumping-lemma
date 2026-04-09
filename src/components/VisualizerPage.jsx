@@ -22,6 +22,7 @@ function VisualizerPage({
   onInputChange,
   onStart,
   onSuggest,
+  onRandomDemo,
   onPrevStep,
   onNextStep,
   onToggleAuto,
@@ -73,6 +74,12 @@ function VisualizerPage({
           </button>
           <button className="ghost" onClick={onSuggest}>
             Suggest Valid String
+          </button>
+        </div>
+
+        <div className="buttonRow showcaseRow" aria-label="Showcase presets">
+          <button type="button" className="ghost" onClick={onRandomDemo}>
+            Random Demo
           </button>
         </div>
 

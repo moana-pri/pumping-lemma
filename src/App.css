@@ -38,10 +38,35 @@
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   border: 1px solid #e8e1d6;
   border-radius: 1rem;
   background: #ffffff;
   padding: 1.35rem;
+  transition: box-shadow 240ms ease, border-color 240ms ease, transform 240ms ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: box-shadow 260ms ease;
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: #bad3ef;
+  box-shadow: 0 9px 20px rgba(45, 108, 181, 0.11);
+  transform: translateY(-2px);
+}
+
+.card:hover::before,
+.card:focus-within::before {
+  box-shadow: inset 0 0 0 1px rgba(72, 145, 227, 0.45), 0 0 22px rgba(94, 161, 236, 0.22);
 }
 
 .topNav {
@@ -99,7 +124,16 @@
 }
 
 .reveal-up {
-  animation: riseIn 0.5s ease both;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.reveal-up.in-view {
+  animation: riseIn 0.55s ease both;
+}
+
+.pageSwitch {
+  animation: pageFadeIn 0.42s ease;
 }
 
 .intro h2,
@@ -163,6 +197,15 @@ button:focus {
   gap: 0.65rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+}
+
+.showcaseRow {
+  margin-top: 0.6rem;
+}
+
+.showcaseRow .ghost {
+  background: #f3f8ff;
+  border: 1px solid #c7d7ea;
 }
 
 button {
@@ -587,6 +630,31 @@ button:disabled {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .pageSwitch,
+  .reveal-up,
+  .token,
+  .stepPanel {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
 }
 

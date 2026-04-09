@@ -8,6 +8,8 @@ Interactive Pumping Lemma visualizer built with React and Vite.
 - Visual animation for x, y, z decomposition and pumping
 - Theory page for beginner-friendly explanation
 - Custom i value testing after walkthrough completion
+- Random demo generator for live presentations
+- Seven built-in language examples (regular and non-regular)
 
 ## Run Locally
 

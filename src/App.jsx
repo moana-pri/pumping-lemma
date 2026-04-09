@@ -52,6 +52,28 @@ function App() {
     return () => window.clearInterval(timer)
   }, [isAutoPlaying, stepIndex, steps.length])
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+
+    const targets = Array.from(document.querySelectorAll('.reveal-up'))
+    if (!targets.length) return undefined
+
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view')
+          }
+        })
+      },
+      { threshold: 0.16 }
+    )
+
+    targets.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [activePage])
+
   const pumpedPreview = useMemo(() => {
     if (!steps.length) return null
     const word = pumped(x, y, z, currentI)
@@ -72,6 +94,14 @@ function App() {
     const nextP = Number.isFinite(p) && p > 0 ? p : 3
     setLangKey(next)
     setInput(LANGS[next].suggest(nextP))
+    setError('')
+    resetWalkthrough()
+  }
+
+  function setDemoLanguage(nextLang, nextP = 3) {
+    setP(nextP)
+    setLangKey(nextLang)
+    setInput(LANGS[nextLang].suggest(nextP))
     setError('')
     resetWalkthrough()
   }
@@ -142,52 +172,59 @@ function App() {
         </button>
       </nav>
 
-      {activePage === 'visualizer' ? (
-        <VisualizerPage
-          langKey={langKey}
-          p={p}
-          input={input}
-          error={error}
-          selectedLang={selectedLang}
-          languageKeys={LANGUAGE_KEYS}
-          langs={LANGS}
-          steps={steps}
-          stepIndex={stepIndex}
-          isAutoPlaying={isAutoPlaying}
-          verdictRevealed={verdictRevealed}
-          walkthroughDone={walkthroughDone}
-          currentStep={currentStep}
-          pumpedPreview={pumpedPreview}
-          x={x}
-          y={y}
-          z={z}
-          customI={customI}
-          onLanguageChange={handleLanguageChange}
-          onPChange={(value) => setP(Number.parseInt(value, 10))}
-          onInputChange={(value) => {
-            setInput(value)
-            setError('')
-          }}
-          onStart={runWalkthrough}
-          onSuggest={() => {
-            setInput(selectedLang.suggest(p || 3))
-            setError('')
-          }}
-          onPrevStep={() => setStepIndex((v) => Math.max(v - 1, 0))}
-          onNextStep={() => setStepIndex((v) => Math.min(v + 1, steps.length - 1))}
-          onToggleAuto={() => setIsAutoPlaying((v) => !v)}
-          onReveal={() => setVerdictRevealed(true)}
-          onCustomIChange={(value) => {
-            setCustomI(value)
-            setUseCustomI(true)
-          }}
-          onUseCustomI={() => setUseCustomI(true)}
-          onUseStepI={() => setUseCustomI(false)}
-          explainText={EXPLAINS[langKey]}
-        />
-      ) : (
-        <TheoryPage />
-      )}
+      <section className="pageSwitch" key={activePage}>
+        {activePage === 'visualizer' ? (
+          <VisualizerPage
+            langKey={langKey}
+            p={p}
+            input={input}
+            error={error}
+            selectedLang={selectedLang}
+            languageKeys={LANGUAGE_KEYS}
+            langs={LANGS}
+            steps={steps}
+            stepIndex={stepIndex}
+            isAutoPlaying={isAutoPlaying}
+            verdictRevealed={verdictRevealed}
+            walkthroughDone={walkthroughDone}
+            currentStep={currentStep}
+            pumpedPreview={pumpedPreview}
+            x={x}
+            y={y}
+            z={z}
+            customI={customI}
+            onLanguageChange={handleLanguageChange}
+            onPChange={(value) => setP(Number.parseInt(value, 10))}
+            onInputChange={(value) => {
+              setInput(value)
+              setError('')
+            }}
+            onStart={runWalkthrough}
+            onSuggest={() => {
+              setInput(selectedLang.suggest(p || 3))
+              setError('')
+            }}
+            onRandomDemo={() => {
+              const randomKey = LANGUAGE_KEYS[Math.floor(Math.random() * LANGUAGE_KEYS.length)]
+              const randomP = 2 + Math.floor(Math.random() * 4)
+              setDemoLanguage(randomKey, randomP)
+            }}
+            onPrevStep={() => setStepIndex((v) => Math.max(v - 1, 0))}
+            onNextStep={() => setStepIndex((v) => Math.min(v + 1, steps.length - 1))}
+            onToggleAuto={() => setIsAutoPlaying((v) => !v)}
+            onReveal={() => setVerdictRevealed(true)}
+            onCustomIChange={(value) => {
+              setCustomI(value)
+              setUseCustomI(true)
+            }}
+            onUseCustomI={() => setUseCustomI(true)}
+            onUseStepI={() => setUseCustomI(false)}
+            explainText={EXPLAINS[langKey]}
+          />
+        ) : (
+          <TheoryPage />
+        )}
+      </section>
     </main>
   )
 }
