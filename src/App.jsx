@@ -222,7 +222,7 @@ function App() {
             explainText={EXPLAINS[langKey]}
           />
         ) : (
-          <TheoryPage />
+          <TheoryPage onGoVisualizer={() => setActivePage('visualizer')} />
         )}
       </section>
     </main>
