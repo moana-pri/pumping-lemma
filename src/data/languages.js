@@ -2,7 +2,7 @@ export const LANGS = {
   firstlanguage: {
     name: 'a^n b^n',
     isReg: false,
-    type: 'Context-Free (Not Regular)',
+    type: 'Non-Regular',
     check: (s) => {
       if (s === '') return true
       const m = s.match(/^(a+)(b+)$/)
@@ -14,7 +14,7 @@ export const LANGS = {
   twolanguage: {
     name: '0^n 1^n',
     isReg: false,
-    type: 'Context-Free (Not Regular)',
+    type: 'Non-Regular',
     check: (s) => {
       if (s === '') return true
       const m = s.match(/^(0+)(1+)$/)
@@ -26,7 +26,7 @@ export const LANGS = {
   threelanguage: {
     name: 'a^n b^n c^n',
     isReg: false,
-    type: 'Not Context-Free',
+    type: 'Non-Regular',
     check: (s) => {
       if (s === '') return true
       const m = s.match(/^(a+)(b+)(c+)$/)
@@ -62,7 +62,7 @@ export const LANGS = {
   sevenlanguage: {
     name: 'a^n b^{2n}',
     isReg: false,
-    type: 'Context-Free (Not Regular)',
+    type: 'Non-Regular',
     check: (s) => {
       if (s === '') return true
       const m = s.match(/^(a+)(b+)$/)
