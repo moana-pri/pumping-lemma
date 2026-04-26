@@ -73,7 +73,11 @@ export function buildSteps({ x, y, z, langKey, p }) {
 
   steps.push({
     title: 'Final Step: Pumping Works',
-    description: 'All tested pumped strings stayed inside the language, so this example is consistent with regularity.',
+    description: [
+      'All tested pumped strings stayed inside the language for this chosen split and tested i values.',
+      'This does NOT prove the language is regular.',
+      'It only means this run found no pumping-lemma contradiction.'
+    ].join('\n'),
     type: 'conclusion'
   })
 

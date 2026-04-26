@@ -88,7 +88,7 @@ function VisualizerPage({
         <div className="metaHighlights">
           <span className="pill pill-lang">Language: {selectedLang.name}</span>
           <span className={selectedLang.isReg ? 'pill pill-regular' : 'pill pill-nonregular'}>
-            {selectedLang.isReg ? 'Regular behavior expected' : 'Non-regular contradiction expected'}
+            {selectedLang.isReg ? 'No contradiction expected in this demo (not a proof)' : 'Non-regular contradiction expected'}
           </span>
           <span className="pill pill-theory">Open "What is Pumping Lemma?" for formal definition</span>
         </div>
@@ -108,7 +108,7 @@ function VisualizerPage({
             <span className="legendRed">Red = contradiction</span>
           </div>
 
-          <div className="blockArea" key={`decomp-${stepIndex}`}>
+          <div className="blockArea">
             <h3>Decomposition s = x y z</h3>
             <div className="charRow">
               {x
@@ -138,13 +138,16 @@ function VisualizerPage({
           </div>
 
           {pumpedPreview ? (
-            <div className={`blockArea pumpArea ${pumpedPreview.ok ? 'ok' : 'bad'}`} key={`pump-${stepIndex}-${pumpedPreview.i}`}>
+            <div className={`blockArea pumpArea ${pumpedPreview.ok ? 'ok' : 'bad'}`}>
               <h3>Pumped String: xy^{pumpedPreview.i}z</h3>
               <div className="charRow">
                 {(x + y.repeat(pumpedPreview.i) + z).split('').map((ch, idx) => {
                   const xEnd = x.length
-                  const yEnd = x.length + y.repeat(pumpedPreview.i).length
-                  const tone = idx < xEnd ? 'x' : idx < yEnd ? 'y' : 'z'
+                  const tone = idx < xEnd
+                    ? 'x'
+                    : idx < x.length + y.repeat(pumpedPreview.i).length
+                      ? 'y'
+                      : 'z'
                   return (
                     <span className={`token token-${tone}`} key={`p-${idx}`} style={{ '--i': idx }}>
                       {ch}
@@ -245,7 +248,11 @@ function VisualizerPage({
           <div className={`verdict ${verdictRevealed ? 'show' : ''}`}>
             {verdictRevealed ? (
               <p>
-                Final verdict: <strong>{selectedLang.name}</strong> is <strong>{selectedLang.type}</strong>.
+                Final verdict: <strong>{selectedLang.name}</strong> is{' '}
+                <strong>{selectedLang.isReg ? 'may be Regular' : selectedLang.type}</strong>.{' '}
+                {selectedLang.isReg
+                  ? 'This demo did not find a contradiction, so the example is consistent with regularity, but it does not prove regularity.'
+                  : 'A contradiction in pumped strings supports non-regularity.'}
               </p>
             ) : (
               <p>Final verdict is hidden. Finish the walkthrough and click Reveal Final Verdict.</p>
